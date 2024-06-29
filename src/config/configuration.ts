@@ -6,7 +6,7 @@ export const {
   POSTGRES_DB,
   POSTGRES_PASSWORD,
   SYNCHRONIZE,
-  SECRET_SESSION_KEY,
+  SECRET_JWT_KEY,
 } = process.env;
 
 export default () => ({
@@ -21,7 +21,7 @@ export default () => ({
     password: POSTGRES_PASSWORD,
   },
   jwt: {
-    secret: SECRET_SESSION_KEY,
+    secret: SECRET_JWT_KEY,
     ttl: 100,
   },
 });

@@ -11,7 +11,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column({ unique: true })
   @Length(1, 64)
@@ -35,5 +35,5 @@ export class User {
   @Column()
   @Min(2)
   @IsNotEmpty()
-  pasword: string;
+  password: string;
 }

@@ -20,5 +20,5 @@ export class CreateUserDto {
 
   @Min(2)
   @IsNotEmpty()
-  pasword: string;
+  password: string;
 }
