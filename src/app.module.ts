@@ -5,8 +5,11 @@ import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/database-config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { UserModule } from './user/user.module';
+import { UserModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { WishesModule } from './wishes/wishes.module';
+import { WishlistsModule } from './wishlists/wishlists.module';
+import { OffersModule } from './offers/offers.module';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { AuthModule } from './auth/auth.module';
     winstonModule,
     UserModule,
     AuthModule,
+    WishesModule,
+    WishlistsModule,
+    OffersModule,
   ],
   providers: [],
 })

@@ -1,6 +1,9 @@
-import { IsEmail, IsNotEmpty, IsUrl, Max, Min } from 'class-validator';
+import { IsDate, IsEmail, IsNotEmpty, IsUrl, Max, Min } from 'class-validator';
 
 export class CreateUserDto {
+  @IsNotEmpty()
+  id: string;
+
   @Min(1)
   @Max(64)
   @IsNotEmpty()
@@ -10,15 +13,23 @@ export class CreateUserDto {
   @Max(200)
   about: string;
 
-  @IsUrl()
   @IsNotEmpty()
+  @IsUrl()
   avatar: string;
 
-  @IsEmail()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @Min(2)
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  @IsDate()
+  createdAt: string;
+
+  @IsNotEmpty()
+  @IsDate()
+  updatedAt: string;
 }
