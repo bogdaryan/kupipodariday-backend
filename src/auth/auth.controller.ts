@@ -4,7 +4,7 @@ import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { CreateUserGuard } from '../users/guards/create-guard';
-import { User } from '../utils/user.decorator';
+import { AuthUser } from '../utils/user.decorator';
 
 @Controller()
 export class AuthController {
@@ -15,7 +15,7 @@ export class AuthController {
 
   @UseGuards(LocalGuard)
   @Post('signin')
-  signin(@User() user) {
+  signin(@AuthUser() user) {
     return this.authService.auth(user);
   }
   @UseGuards(CreateUserGuard)

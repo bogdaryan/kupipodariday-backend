@@ -1,13 +1,11 @@
-import * as bcrypt from 'bcrypt';
-
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ERR_MESSAGES } from '../constants/error-messages';
+import { hashValue } from '../utils/hash';
 
 @Injectable()
 export class UsersService {
@@ -20,17 +18,16 @@ export class UsersService {
     this.secretKey = this.configService.get<string>('jwt.secret');
   }
 
-  async findOne(id: string) {
-    return this.usersRepository.findOne({ where: { id } });
+  async findOne(options: FindManyOptions<User>) {
+    return this.usersRepository.findOneOrFail(options);
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { password } = createUserDto;
-    const hashPassword = await bcrypt.hash(password, await bcrypt.genSalt());
 
     const newUser = this.usersRepository.create({
-      password: hashPassword,
       ...createUserDto,
+      password: await hashValue(password),
     });
 
     return this.usersRepository.save(newUser);
@@ -39,20 +36,19 @@ export class UsersService {
   async findByUsername(username: string) {
     const user = await this.usersRepository.findOne({
       where: { username },
-      select: ['id', 'username', 'password'],
+      select: { password: true, username: true, id: true },
     });
 
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.findOne(id);
+  async update(options: FindManyOptions<User>, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(options);
 
-    if (!user) {
-      throw new Error(ERR_MESSAGES.userNotFound);
+    if (updateUserDto.password) {
+      updateUserDto.password = await hashValue(updateUserDto.password);
     }
 
-    Object.assign(user, updateUserDto);
-    return this.usersRepository.save(user);
+    return await this.usersRepository.save({ ...user, ...updateUserDto });
   }
 }

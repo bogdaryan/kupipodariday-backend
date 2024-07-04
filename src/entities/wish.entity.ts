@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsUrl, Length } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, IsUrl, Length } from 'class-validator';
 
 import {
   Column,
@@ -13,7 +13,6 @@ import {
 
 import { User } from './user.entity';
 import { Offer } from './offers.entity';
-import { Wishlists } from './wishlists.entity';
 
 @Entity()
 export class Wish {
@@ -39,18 +38,20 @@ export class Wish {
   @IsNotEmpty()
   price: number;
 
-  @Column()
+  @Column({ default: 0 })
   @IsNotEmpty()
-  raised: string;
+  @IsInt()
+  copied: number;
+
+  @Column({ default: 0 })
+  @IsNotEmpty()
+  @IsInt()
+  raised: number;
 
   @Column()
   @Length(1, 1024)
   @IsNotEmpty()
   description: string;
-
-  @Column()
-  @IsNotEmpty()
-  copied: number;
 
   @ManyToOne(() => User, (user) => user.wishes)
   owner: User;
@@ -59,12 +60,11 @@ export class Wish {
   @JoinTable()
   offers: Offer[];
 
-  @ManyToMany(() => Wishlists, (wishlist) => wishlist.items)
-  wishlists: Wishlists[];
-
   @CreateDateColumn()
+  @IsDate()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @IsDate()
   updatedAt: Date;
 }

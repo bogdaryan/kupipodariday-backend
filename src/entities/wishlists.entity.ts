@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsUrl, Length } from 'class-validator';
+import { IsDate, IsNotEmpty, IsUrl, Length } from 'class-validator';
 
 import {
   Column,
@@ -32,12 +32,14 @@ export class Wishlists {
   image: string;
 
   @CreateDateColumn()
+  @IsDate()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @IsDate()
   updatedAt: Date;
 
-  @ManyToMany(() => Wish, (wish) => wish.wishlists)
+  @ManyToMany(() => Wish)
   @JoinTable()
   items: Wish[];
 }

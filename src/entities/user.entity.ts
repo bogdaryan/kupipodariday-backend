@@ -1,4 +1,5 @@
 import {
+  IsDate,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -62,8 +63,10 @@ export class User {
   wishlists: Wishlists[];
 
   @CreateDateColumn()
+  @IsDate()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @IsDate()
   updatedAt: Date;
 }

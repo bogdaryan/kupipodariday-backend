@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsUrl } from 'class-validator';
+import { IsBoolean, IsDate, IsNotEmpty } from 'class-validator';
 
 import {
   Column,
@@ -19,8 +19,6 @@ export class Offer {
   user: User;
 
   @Column()
-  @IsUrl()
-  @IsNotEmpty()
   item: string;
 
   @Column()
@@ -32,8 +30,10 @@ export class Offer {
   hidden: boolean;
 
   @CreateDateColumn()
+  @IsDate()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @IsDate()
   updatedAt: Date;
 }

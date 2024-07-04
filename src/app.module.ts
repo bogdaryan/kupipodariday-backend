@@ -8,8 +8,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { UserModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { WishesModule } from './wishes/wishes.module';
-import { WishlistsModule } from './wishlists/wishlists.module';
 import { OffersModule } from './offers/offers.module';
+// import { WishlistsModule } from './wishlists/wishlists.module';
+// import { OffersModule } from './offers/offers.module';
 
 @Module({
   imports: [
@@ -30,8 +31,8 @@ import { OffersModule } from './offers/offers.module';
     UserModule,
     AuthModule,
     WishesModule,
-    WishlistsModule,
     OffersModule,
+    // WishlistsModule,
   ],
   providers: [],
 })
