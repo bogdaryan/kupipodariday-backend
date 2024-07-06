@@ -32,7 +32,7 @@ export class WishesController {
 
   @Get('last')
   findLast() {
-    return this.wishesService.findLatest({
+    return this.wishesService.find({
       order: {
         createdAt: 'DESC',
       },
@@ -42,7 +42,7 @@ export class WishesController {
 
   @Get('top')
   findTop() {
-    return this.wishesService.findTop({
+    return this.wishesService.find({
       order: {
         copied: 'DESC',
       },
@@ -91,14 +91,7 @@ export class WishesController {
 
   @UseGuards(JwtGuard)
   @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id,
-    @Body() body: UpdateWishDto,
-    @AuthUser() user: User,
-  ) {
-    return await this.wishesService.update(
-      { where: { id, owner: Equal(user.id) } },
-      body,
-    );
+  async update(@Param('id', ParseIntPipe) id, @Body() body: UpdateWishDto) {
+    return await this.wishesService.update(id, body);
   }
 }

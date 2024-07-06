@@ -5,8 +5,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,7 +17,7 @@ import { Offer } from './offers.entity';
 @Entity()
 export class Wish {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   @Length(1, 250)
@@ -56,7 +56,7 @@ export class Wish {
   @ManyToOne(() => User, (user) => user.wishes)
   owner: User;
 
-  @ManyToMany(() => Offer, (offer) => offer.user)
+  @OneToMany(() => Offer, (offer) => offer.item)
   @JoinTable()
   offers: Offer[];
 

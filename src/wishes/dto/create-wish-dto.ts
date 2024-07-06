@@ -29,4 +29,12 @@ export class CreateWishDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  raised: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  copied: number;
 }

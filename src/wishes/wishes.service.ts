@@ -14,20 +14,12 @@ export class WishesService {
   ) {}
 
   async create(createWishDto: CreateWishDto, userId) {
-    const newWish = await this.wishRepository.create({
+    return await this.wishRepository.save({
       ...createWishDto,
+      raised: 0,
+      copied: 0,
       owner: userId,
     });
-
-    return await this.wishRepository.save(newWish);
-  }
-
-  async findLatest(options: FindManyOptions<Wish>) {
-    return this.wishRepository.find(options);
-  }
-
-  async findTop(options: FindManyOptions<Wish>) {
-    return this.wishRepository.find(options);
   }
 
   async find(options: FindManyOptions<Wish>) {
@@ -43,13 +35,7 @@ export class WishesService {
     return await this.wishRepository.remove(wish);
   }
 
-  async update(options: FindManyOptions<Wish>, updateWishDto: UpdateWishDto) {
-    const wish = await this.findOne(options);
-
-    // if (updateWishDto.raised) {
-    //   return;
-    // }
-
-    return await this.wishRepository.save({ ...wish, ...updateWishDto });
+  async update(id: number, updateWishDto: UpdateWishDto) {
+    return await this.wishRepository.update(id, updateWishDto);
   }
 }

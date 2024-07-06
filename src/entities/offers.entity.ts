@@ -5,21 +5,23 @@ import {
   CreateDateColumn,
   Entity,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Wish } from './wish.entity';
 
 @Entity()
 export class Offer {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @ManyToMany(() => User, (user) => user.offers)
   user: User;
 
-  @Column()
-  item: string;
+  @ManyToOne(() => Wish, (wish) => wish.offers)
+  item: Wish;
 
   @Column()
   @IsNotEmpty()
