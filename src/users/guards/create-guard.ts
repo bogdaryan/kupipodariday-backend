@@ -12,13 +12,19 @@ export class CreateUserGuard implements CanActivate {
   constructor(private readonly usersService: UsersService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const { username } = request.body;
+    const req = context.switchToHttp().getRequest();
+    const { username, email } = req.body;
 
-    const user = await this.usersService.findByUsername(username);
+    const user = await this.usersService.find({
+      where: [{ username }, { email }],
+    });
 
     if (user) {
-      throw new BadRequestException(ERR_MESSAGES.userExist);
+      if (user.username === username) {
+        throw new BadRequestException(ERR_MESSAGES.usernameExist);
+      } else if (user.email === email) {
+        throw new BadRequestException(ERR_MESSAGES.emailExist);
+      }
     }
 
     return true;

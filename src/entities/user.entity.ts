@@ -24,7 +24,7 @@ import { Wishlists } from './wishlists.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ unique: true })
   @Length(1, 64)
@@ -58,7 +58,7 @@ export class User {
   @JoinTable()
   offers: Offer[];
 
-  @ManyToMany(() => Wishlists, (wishlists) => wishlists.items)
+  @OneToMany(() => Wishlists, (wishlists) => wishlists.owner)
   @JoinTable()
   wishlists: Wishlists[];
 

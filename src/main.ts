@@ -5,6 +5,7 @@ import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import * as session from 'express-session';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,6 +21,14 @@ async function bootstrap() {
       secret: process.env.SECRET_SESSION_KEY,
       resave: false,
       saveUninitialized: false,
+    }),
+  );
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Удаляет свойства, которые не указаны в DTO
+      forbidNonWhitelisted: true, // Бросает ошибку, если объект содержит неизвестные свойства
+      transform: true, // Преобразует входные данные в типы, указанные в DTO
     }),
   );
 

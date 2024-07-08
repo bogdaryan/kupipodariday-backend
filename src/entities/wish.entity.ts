@@ -13,6 +13,7 @@ import {
 
 import { User } from './user.entity';
 import { Offer } from './offers.entity';
+import { Wishlists } from './wishlists.entity';
 
 @Entity()
 export class Wish {
@@ -56,9 +57,15 @@ export class Wish {
   @ManyToOne(() => User, (user) => user.wishes)
   owner: User;
 
-  @OneToMany(() => Offer, (offer) => offer.item)
+  @OneToMany(() => Offer, (offer) => offer.item, { cascade: true })
   @JoinTable()
   offers: Offer[];
+
+  @ManyToOne(() => Wishlists, (wishlists) => wishlists.items, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  wishlists: Wishlists;
 
   @CreateDateColumn()
   @IsDate()

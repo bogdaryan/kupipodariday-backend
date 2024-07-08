@@ -19,7 +19,11 @@ export class UsersService {
   }
 
   async findOne(options: FindManyOptions<User>) {
-    return this.usersRepository.findOneOrFail(options);
+    return await this.usersRepository.findOneOrFail(options);
+  }
+
+  async find(options: FindManyOptions<User>) {
+    return await this.usersRepository.findOne(options);
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -30,7 +34,7 @@ export class UsersService {
       password: await hashValue(password),
     });
 
-    return this.usersRepository.save(newUser);
+    return await this.usersRepository.save(newUser);
   }
 
   async findByUsername(username: string) {

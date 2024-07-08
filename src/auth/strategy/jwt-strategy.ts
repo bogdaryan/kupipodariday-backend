@@ -12,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(jwtPayload: { id: string }) {
+  validate(jwtPayload: { id: number }) {
     const user = this.usersService.findOne({ where: { id: jwtPayload.id } });
 
     if (!user) {

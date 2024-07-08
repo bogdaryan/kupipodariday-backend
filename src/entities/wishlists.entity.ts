@@ -5,26 +5,24 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 import { Wish } from './wish.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Wishlists {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   @Length(1, 250)
   @IsNotEmpty()
   name: string;
-
-  @Column()
-  @Length(0, 1500)
-  @IsNotEmpty()
-  description: string;
 
   @Column()
   @IsUrl()
@@ -39,7 +37,11 @@ export class Wishlists {
   @IsDate()
   updatedAt: Date;
 
-  @ManyToMany(() => Wish)
+  @OneToMany(() => Wish, (wish) => wish.wishlists, { cascade: true })
   @JoinTable()
   items: Wish[];
+
+  @ManyToOne(() => User, (user) => user.wishlists)
+  @JoinTable()
+  owner: User;
 }

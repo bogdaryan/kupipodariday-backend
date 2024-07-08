@@ -5,6 +5,7 @@ import {
   Min,
   Length,
   IsNotEmpty,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateWishDto {
@@ -30,11 +31,7 @@ export class CreateWishDto {
   @IsNotEmpty()
   description: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   raised: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  copied: number;
 }

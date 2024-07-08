@@ -5,6 +5,7 @@ import { FindManyOptions, Repository } from 'typeorm';
 import { JwtGuard } from '../auth/guard/auth-guard';
 import { CreateWishDto } from './dto/create-wish-dto';
 import { UpdateWishDto } from './dto/update-wish-dto';
+import { User } from '../entities/user.entity';
 
 @UseGuards(JwtGuard)
 @Injectable()
@@ -16,8 +17,6 @@ export class WishesService {
   async create(createWishDto: CreateWishDto, userId) {
     return await this.wishRepository.save({
       ...createWishDto,
-      raised: 0,
-      copied: 0,
       owner: userId,
     });
   }
@@ -30,12 +29,28 @@ export class WishesService {
     return await this.wishRepository.findOneOrFail(options);
   }
 
-  async removeOne(options: FindManyOptions<Wish>) {
+  async delete(options: FindManyOptions<Wish>) {
     const wish = await this.wishRepository.findOneOrFail(options);
     return await this.wishRepository.remove(wish);
   }
 
   async update(id: number, updateWishDto: UpdateWishDto) {
     return await this.wishRepository.update(id, updateWishDto);
+  }
+
+  async copy(id: number, user: User) {
+    const wish = await this.findOne({
+      where: { id },
+      relations: { owner: true },
+    });
+
+    const copiedWish = {
+      ...wish,
+      id: null,
+      owner: user,
+      copied: wish.copied + 1,
+    };
+
+    return await this.create(copiedWish, user.id);
   }
 }

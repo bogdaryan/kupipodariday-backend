@@ -18,6 +18,8 @@ import { JwtGuard } from '../auth/guard/auth-guard';
 import { EntityNotFoundExceptionFilter } from '../exception/exception-filter';
 import { Equal } from 'typeorm';
 import { UpdateWishDto } from './dto/update-wish-dto';
+import { CopyWishGuard } from './guards/copy-guard';
+import { UpdateWishGuard } from './guards/update-guard';
 
 @UseFilters(EntityNotFoundExceptionFilter)
 @Controller('wishes')
@@ -61,35 +63,19 @@ export class WishesController {
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  removeOne(@Param('id', ParseIntPipe) id, @AuthUser() user: User) {
-    return this.wishesService.removeOne({
+  delete(@Param('id', ParseIntPipe) id, @AuthUser() user: User) {
+    return this.wishesService.delete({
       where: { id, owner: Equal(user.id) },
     });
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, CopyWishGuard)
   @Post(':id/copy')
   async copy(@Param('id', ParseIntPipe) id, @AuthUser() user: User) {
-    const wish = await this.wishesService.findOne({
-      where: { id },
-      relations: { owner: true },
-    });
-
-    if (wish.owner.id === user.id) {
-      return;
-    }
-
-    const copiedWish = {
-      ...wish,
-      id: null,
-      owner: user,
-      copied: wish.copied + 1,
-    };
-
-    return await this.wishesService.create(copiedWish, user.id);
+    return await this.wishesService.copy(id, user);
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, UpdateWishGuard)
   @Patch(':id')
   async update(@Param('id', ParseIntPipe) id, @Body() body: UpdateWishDto) {
     return await this.wishesService.update(id, body);

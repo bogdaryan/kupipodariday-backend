@@ -1,5 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import { EntityNotFoundError } from 'typeorm';
+import { ERR_MESSAGES } from '../constants/error-messages';
 
 @Catch(EntityNotFoundError)
 export class EntityNotFoundExceptionFilter implements ExceptionFilter {
@@ -12,7 +13,7 @@ export class EntityNotFoundExceptionFilter implements ExceptionFilter {
       statusCode: 404,
       timestamp: new Date().toISOString(),
       path: request.url,
-      message: 'Запись не найдена',
+      message: ERR_MESSAGES.entityNotFound,
     });
   }
 }
