@@ -3,7 +3,7 @@ import { LocalGuard } from './guard/local-guard';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { CreateUserGuard } from '../users/guards/create-guard';
+import { CreateUpdateUserGuard } from '../users/guard/create-update-guard';
 import { AuthUser } from '../utils/user.decorator';
 
 @Controller()
@@ -18,7 +18,7 @@ export class AuthController {
   signin(@AuthUser() user) {
     return this.authService.auth(user);
   }
-  @UseGuards(CreateUserGuard)
+  @UseGuards(CreateUpdateUserGuard)
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);

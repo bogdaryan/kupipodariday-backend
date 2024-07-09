@@ -18,8 +18,8 @@ import { JwtGuard } from '../auth/guard/auth-guard';
 import { EntityNotFoundExceptionFilter } from '../exception/exception-filter';
 import { Equal } from 'typeorm';
 import { UpdateWishDto } from './dto/update-wish-dto';
-import { CopyWishGuard } from './guards/copy-guard';
-import { UpdateWishGuard } from './guards/update-guard';
+import { CopyWishGuard } from './guard/copy-guard';
+import { UpdateWishGuard } from './guard/update-guard';
 
 @UseFilters(EntityNotFoundExceptionFilter)
 @Controller('wishes')

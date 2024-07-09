@@ -8,7 +8,7 @@ import { UsersService } from '../users.service';
 import { ERR_MESSAGES } from '../../constants/error-messages';
 
 @Injectable()
-export class CreateUserGuard implements CanActivate {
+export class CreateUpdateUserGuard implements CanActivate {
   constructor(private readonly usersService: UsersService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

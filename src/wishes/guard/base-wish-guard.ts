@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { WishesService } from '../wishes.service';
+import { ERR_MESSAGES } from '../../constants/error-messages';
 
 @Injectable()
 export abstract class BaseWishGuard implements CanActivate {
@@ -25,9 +26,14 @@ export abstract class BaseWishGuard implements CanActivate {
       throw new BadRequestException(this.getErrorMessage());
     }
 
+    if (await this.isAlreadyCopied(wishId, userId)) {
+      throw new BadRequestException(ERR_MESSAGES.alreadyСopied);
+    }
+
     return true;
   }
 
   abstract checkCondition(wishOwnerId: number, userId: number): boolean;
+  abstract isAlreadyCopied(wishId: number, userId: number): Promise<boolean>;
   abstract getErrorMessage(): string;
 }

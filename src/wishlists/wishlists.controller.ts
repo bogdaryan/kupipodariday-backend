@@ -17,6 +17,8 @@ import { User } from '../entities/user.entity';
 import { CreateWishlistDto } from './dto/create-wishlist-dto';
 import { EntityNotFoundExceptionFilter } from '../exception/exception-filter';
 import { UpdateWishlistDto } from './dto/update-wishlist-dto';
+import { DeleteWishlistGuard } from './guard/delete-guard';
+import { UpdateWishlistGuard } from './guard/update-guard';
 
 @UseFilters(EntityNotFoundExceptionFilter)
 @UseGuards(JwtGuard)
@@ -42,16 +44,18 @@ export class WishlistsController {
     return await this.wishlistsService.find({});
   }
 
+  @UseGuards(DeleteWishlistGuard)
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
-    return await this.wishlistsService.delete({ where: { id } });
+    // return await this.wishlistsService.delete({ where: { id } });
   }
 
+  @UseGuards(UpdateWishlistGuard)
   @Patch(':id')
   async update(
     @Body() updateWishlistDto: UpdateWishlistDto,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return await this.wishlistsService.update(id, updateWishlistDto);
+    // return await this.wishlistsService.update(id, updateWishlistDto);
   }
 }
