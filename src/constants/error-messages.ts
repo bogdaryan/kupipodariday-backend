@@ -6,4 +6,7 @@ export enum ERR_MESSAGES {
   cantToCopyOwn = 'Невозможно скопировать собственное желание',
   notYourWish = 'Невозможно обновить не свою запись',
   entityNotFound = 'Запись не найдена',
+  alreadyСopied = 'Запись уже скопирована',
+  forrbidenDelete = 'Нельзя удалять чужие записи',
+  forrbidenUpdate = 'Нельзя обновлять чужие записи',
 }

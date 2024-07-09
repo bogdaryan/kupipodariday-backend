@@ -48,6 +48,7 @@ export class WishesService {
       ...wish,
       id: null,
       owner: user,
+      originalWishId: id,
       copied: wish.copied + 1,
     };
 

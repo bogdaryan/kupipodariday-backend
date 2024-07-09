@@ -16,6 +16,7 @@ import { User } from '../entities/user.entity';
 import { Equal } from 'typeorm';
 import { WishesService } from '../wishes/wishes.service';
 import { EntityNotFoundExceptionFilter } from '../exception/exception-filter';
+import { CreateUpdateUserGuard } from './guard/create-update-guard';
 
 @UseFilters(EntityNotFoundExceptionFilter)
 @UseGuards(JwtGuard)
@@ -31,6 +32,7 @@ export class UserController {
     return user;
   }
 
+  @UseGuards(CreateUpdateUserGuard)
   @Patch('me')
   async update(@Body() body: UpdateUserDto, @AuthUser() user: User) {
     return await this.usersService.update({ where: { id: user.id } }, body);

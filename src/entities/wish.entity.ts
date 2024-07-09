@@ -44,6 +44,9 @@ export class Wish {
   @IsInt()
   copied: number;
 
+  @Column({ nullable: true })
+  originalWishId: number;
+
   @Column({ default: 0 })
   @IsNotEmpty()
   @IsInt()
